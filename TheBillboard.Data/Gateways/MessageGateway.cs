@@ -11,9 +11,10 @@ public class MessageGateway : IGateway<Message>
 
     public MessageGateway(TheBillboardContext context) => _context = context;
 
-    public IEnumerable<Message> GetAll() => _context.Messages
-        .Include(m => m.Author);
+    public IEnumerable<Message> GetAll() => _context.Messages.Include(m => m.Author);
+
     public Message? GetById(int id) => _context.Messages.Find(id);
+
     public Message Insert(Message entity)
     {
         var e = _context.Messages.Add(entity);

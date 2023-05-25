@@ -22,14 +22,37 @@ public class MessageController : ControllerBase
     public IEnumerable<Message> Get() => _gateway.GetAll();
 
     [HttpPost]
-    public Message Post([FromBody] Message message) => _gateway.Insert(message);
-
-
-    // AGGIUNTA STUDENTE
+    public IActionResult Post([FromBody] Message message)
+    {
+        if (message.Title is null || message.Body is null)
+        {
+            return BadRequest();
+}
+        else
+        {
+            _gateway.Insert(message);
+            return StatusCode(200);
+        }
+    } 
 
     [HttpDelete]
-    public void Delete(int Id) => _gateway.Delete(Id);
+    public IActionResult Delete(int Id)
+    {
+        if (_gateway.GetById(Id) is null)
+        {
+            return BadRequest();
+        }
+        else
+        {
+            _gateway.Delete(Id);
+            return StatusCode(200);
+        }
+    } 
 
     [HttpPut]
-    public void Put([FromBody] Message message) => _gateway.Modify(message);
+    public IActionResult Put([FromBody] Message message)
+    {
+        _gateway.Modify(message);
+        return Ok();
+    }
 }
