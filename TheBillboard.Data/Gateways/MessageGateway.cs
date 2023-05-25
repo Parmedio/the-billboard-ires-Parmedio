@@ -22,7 +22,22 @@ public class MessageGateway : IGateway<Message>
         return e.Entity;
     }
 
-    public void Modify(Message entity) => throw new NotImplementedException();
 
-    public void Delete(int id) => throw new NotImplementedException();
+    // AGGIUNTA STUDENTE
+    public void Delete(int id)
+    {
+        var message = _context.Messages.Find(id);
+        if (message != null)
+        {
+            _context.Messages.Remove(message);
+            _context.SaveChanges();
+        }
+    }
+    public Message Modify(Message entity)
+    {
+        var e = _context.Messages.Update(entity);
+        _context.SaveChanges();
+
+        return e.Entity;
+    }
 }

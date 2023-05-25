@@ -15,6 +15,6 @@ public class AuthorGateway : IGateway<Author>
 
     public Author? GetById(int id) => _authors.SingleOrDefault(author => author.Id == id);
     public Author Insert(Author entity) => throw new NotImplementedException();
-    public void Modify(Author entity) => throw new NotImplementedException();
+    public Author Modify(Author entity) => throw new NotImplementedException();
     public void Delete(int id) => throw new NotImplementedException();
 }

@@ -23,4 +23,13 @@ public class MessageController : ControllerBase
 
     [HttpPost]
     public Message Post([FromBody] Message message) => _gateway.Insert(message);
+
+
+    // AGGIUNTA STUDENTE
+
+    [HttpDelete]
+    public void Delete(int Id) => _gateway.Delete(Id);
+
+    [HttpPut]
+    public void Put([FromBody] Message message) => _gateway.Modify(message);
 }
