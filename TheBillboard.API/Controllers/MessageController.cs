@@ -4,6 +4,7 @@ namespace TheBillboard.API.Controllers;
 
 using Data.Abstract;
 using Data.Models;
+using TheBillboard.Data.Gateways;
 
 [ApiController]
 [Route("api/[controller]")]
@@ -19,21 +20,50 @@ public class MessageController : ControllerBase
     }
 
     [HttpGet]
-    public IEnumerable<Message> Get() => _gateway.GetAll();
+    public IActionResult Get()
+    {
+        try
+        {
+            var messages = _gateway.GetAll();
+            return Ok(messages);
+        }
+        catch
+        {
+            return Problem();
+        }
+    }
+
+    [HttpGet("{id:int}")]
+    public Message GetById(int id) => _gateway.GetById(id)!;
+
 
     [HttpPost]
     public IActionResult Post([FromBody] Message message)
     {
-        if (message.Title is null || message.Body is null)
+        if (message.Title == string.Empty || message.Body == string.Empty || message.AuthorId == null)
         {
             return BadRequest();
 }
         else
         {
             _gateway.Insert(message);
-            return StatusCode(200);
+            return Ok();
         }
     } 
+
+    [HttpPut]
+    public IActionResult Put([FromBody] Message message)
+    {
+        try
+        {
+            _gateway.Modify(message);
+            return Ok();
+        }
+        catch
+        {
+            return BadRequest();
+        }
+    }
 
     [HttpDelete]
     public IActionResult Delete(int Id)
@@ -45,14 +75,7 @@ public class MessageController : ControllerBase
         else
         {
             _gateway.Delete(Id);
-            return StatusCode(200);
+            return Ok();
         }
     } 
-
-    [HttpPut]
-    public IActionResult Put([FromBody] Message message)
-    {
-        _gateway.Modify(message);
-        return Ok();
-    }
 }

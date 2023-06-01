@@ -23,8 +23,6 @@ public class MessageGateway : IGateway<Message>
         return e.Entity;
     }
 
-
-    // AGGIUNTA STUDENTE
     public void Delete(int id)
     {
         var message = _context.Messages.Find(id);
@@ -34,6 +32,7 @@ public class MessageGateway : IGateway<Message>
             _context.SaveChanges();
         }
     }
+
     public Message Modify(Message entity)
     {
         var e = _context.Messages.Update(entity);
